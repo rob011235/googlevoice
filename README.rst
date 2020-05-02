@@ -27,6 +27,8 @@ Python Google Voice Library
 
 Based on pygooglevoice by Joe McCall & Justin Quick.
 
+This project is *essentially broken* as the login API has changed and a new technique for logging in has not been developed. Please see `issue 8 <https://github.com/jaraco/googlevoice/issues/8>`_ for details.
+
 
 Exposing the Google Voice "API" to the Python language
 -------------------------------------------------------
