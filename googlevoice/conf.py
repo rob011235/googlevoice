@@ -10,6 +10,7 @@ class Config(configparser.ConfigParser):
     ``ConfigParser`` subclass that looks into your home folder for a file named
     ``.gvoice`` and parses configuration data from it.
     """
+
     def __init__(self, filename=os.path.expanduser('~/.gvoice')):
         self.fname = filename
 
@@ -29,8 +30,10 @@ class Config(configparser.ConfigParser):
 
     def get(self, option, section='gvoice', **kwargs):
         try:
-            return configparser.ConfigParser.get(
-                self, section, option, **kwargs).strip() or None
+            return (
+                configparser.ConfigParser.get(self, section, option, **kwargs).strip()
+                or None
+            )
         except configparser.NoOptionError:
             return
 

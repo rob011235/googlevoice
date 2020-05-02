@@ -27,7 +27,8 @@ class Voice(object):
     """
 
     user_agent = 'googlevoice/{__version__} Python/{pyver}'.format(
-        pyver=platform.python_version(), **vars(__import__('googlevoice')))
+        pyver=platform.python_version(), **vars(__import__('googlevoice'))
+    )
 
     def __init__(self):
         self.session = requests.Session()
@@ -55,6 +56,7 @@ class Voice(object):
             sp = None
         self._special = sp
         return sp
+
     special = property(special)
 
     def login(self, email=None, passwd=None, smsKey=None):
@@ -72,22 +74,22 @@ class Voice(object):
         content = self.__do_page('login').text
         # holy hackjob
         gxf = re.search(
-            r"type=\"hidden\"\s+name=\"gxf\"\s+value=\"(.+)\"",
-            content).group(1)
+            r"type=\"hidden\"\s+name=\"gxf\"\s+value=\"(.+)\"", content
+        ).group(1)
         result = self.__do_page(
-            'login_post',
-            {'Email': email, 'Passwd': passwd, 'gxf': gxf})
+            'login_post', {'Email': email, 'Passwd': passwd, 'gxf': gxf}
+        )
 
         if result.url.startswith(getattr(settings, "SMSAUTH")):
             content = self.__smsAuth(smsKey)
 
             try:
                 smsToken = re.search(
-                    r"name=\"smsToken\"\s+value=\"([^\"]+)\"",
-                    content).group(1)
+                    r"name=\"smsToken\"\s+value=\"([^\"]+)\"", content
+                ).group(1)
                 content = self.__do_page(
-                    'login',
-                    {'smsToken': smsToken, 'service': "grandcentral"})
+                    'login', {'smsToken': smsToken, 'service': "grandcentral"}
+                )
             except AttributeError:
                 raise util.LoginError
 
@@ -108,24 +110,29 @@ class Voice(object):
 
         if smsKey is None:
             from getpass import getpass
+
             smsPin = getpass("SMS PIN: ")
             content = self.__do_page('smsauth', {'smsUserPin': smsPin}).read()
 
         else:
-            smsKey = base64.b32decode(
-                re.sub(r' ', '', smsKey), casefold=True).encode("hex")
+            smsKey = base64.b32decode(re.sub(r' ', '', smsKey), casefold=True).encode(
+                "hex"
+            )
             content = self.__oathtoolAuth(smsKey)
 
             try_count = 1
 
-            while ("The code you entered didn&#39;t verify." in content
-                    and try_count < 5):
+            while (
+                "The code you entered didn&#39;t verify." in content and try_count < 5
+            ):
                 sleep_seconds = 10
                 try_count += 1
                 print(
                     'invalid code, retrying after %s seconds (attempt %s)'
-                    % (sleep_seconds, try_count))
+                    % (sleep_seconds, try_count)
+                )
                 import time
+
                 time.sleep(sleep_seconds)
                 content = self.__oathtoolAuth(smsKey)
 
@@ -135,6 +142,7 @@ class Voice(object):
 
     def __oathtoolAuth(self, smsKey):
         import commands
+
         smsPin = commands.getstatusoutput('oathtool --totp ' + smsKey)[1]
         content = self.__do_page('smsauth', {'smsUserPin': smsPin}).read()
         del smsPin
@@ -150,8 +158,12 @@ class Voice(object):
         return self
 
     def call(
-            self, outgoingNumber, forwardingNumber=None, phoneType=None,
-            subscriberNumber=None):
+        self,
+        outgoingNumber,
+        forwardingNumber=None,
+        phoneType=None,
+        subscriberNumber=None,
+    ):
         """
         Make a call to an ``outgoingNumber`` from your
         ``forwardingNumber`` (optional).
@@ -163,13 +175,16 @@ class Voice(object):
         if phoneType is None:
             phoneType = config.phoneType
 
-        self.__validate_special_page('call', {
-            'outgoingNumber': outgoingNumber,
-            'forwardingNumber': forwardingNumber,
-            'subscriberNumber': subscriberNumber or 'undefined',
-            'phoneType': phoneType,
-            'remember': '1'
-        })
+        self.__validate_special_page(
+            'call',
+            {
+                'outgoingNumber': outgoingNumber,
+                'forwardingNumber': forwardingNumber,
+                'subscriberNumber': subscriberNumber or 'undefined',
+                'phoneType': phoneType,
+                'remember': '1',
+            },
+        )
 
     __call__ = call
 
@@ -178,19 +193,21 @@ class Voice(object):
         Cancels a call matching outgoing and forwarding numbers (if given).
         Will raise an error if no matching call is being placed
         """
-        self.__validate_special_page('cancel', {
-            'outgoingNumber': outgoingNumber or 'undefined',
-            'forwardingNumber': forwardingNumber or 'undefined',
-            'cancelType': 'C2C',
-        })
+        self.__validate_special_page(
+            'cancel',
+            {
+                'outgoingNumber': outgoingNumber or 'undefined',
+                'forwardingNumber': forwardingNumber or 'undefined',
+                'cancelType': 'C2C',
+            },
+        )
 
     def phones(self):
         """
         Returns a list of ``Phone`` instances attached to your account.
         """
-        return [
-            util.Phone(self, data)
-            for data in self.contacts['phones'].values()]
+        return [util.Phone(self, data) for data in self.contacts['phones'].values()]
+
     phones = property(phones)
 
     def settings(self):
@@ -198,6 +215,7 @@ class Voice(object):
         Dict of current Google Voice settings
         """
         return util.AttrDict(self.contacts['settings'])
+
     settings = property(settings)
 
     def send_sms(self, phoneNumber, text):
@@ -205,8 +223,7 @@ class Voice(object):
         Send an SMS message to a given ``phoneNumber`` with
         the given ``text`` message
         """
-        self.__validate_special_page(
-            'sms', {'phoneNumber': phoneNumber, 'text': text})
+        self.__validate_special_page('sms', {'phoneNumber': phoneNumber, 'text': text})
 
     def search(self, query):
         """
@@ -239,6 +256,7 @@ class Voice(object):
         Returns location of saved file.
         """
         from os import path, getcwd
+
         if isinstance(msg, util.Message):
             msg = msg.id
         if adir is None:
@@ -266,6 +284,7 @@ class Voice(object):
             return self._contacts
         self._contacts = self.__get_xml_page('contacts')()
         return self._contacts
+
     contacts = property(contacts)
 
     ######################
@@ -287,7 +306,8 @@ class Voice(object):
         log.debug('data is %s', data)
         method = 'POST' if data else 'GET'
         return self.session.request(
-            method, url, data=data, params=terms or None, headers=headers)
+            method, url, data=data, params=terms or None, headers=headers
+        )
 
     def __validate_special_page(self, page, data={}, **kwargs):
         """
@@ -315,9 +335,11 @@ class Voice(object):
         """
         Return XMLParser instance generated from given page
         """
+
         def getter():
             page_name = 'XML_%s' % page.upper()
             return self.__do_special_page(page_name, data, headers, terms).text
+
         return util.XMLParser(self, page, getter)
 
     def __messages_post(self, page, *msgs, **data):

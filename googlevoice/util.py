@@ -89,6 +89,7 @@ class Phone(AttrDict):
      * type: int (1 - Home, 2 - Mobile, 3 - Work, 4 - Gizmo)
 
     """
+
     def __init__(self, voice, data):
         self.voice = voice
         super(Phone, self).__init__(data)
@@ -110,8 +111,8 @@ class Phone(AttrDict):
         Enables or disables this phone
         """
         self.voice.__validate_special_page(
-            'default_forward',
-            {'enabled': enabled, 'phoneId': self.id})
+            'default_forward', {'enabled': enabled, 'phoneId': self.id}
+        )
 
     def __str__(self):
         return self.phoneNumber
@@ -142,13 +143,15 @@ class Message(AttrDict):
      * type: int
 
     """
+
     def __init__(self, folder, id, data):
         self.folder = folder
         self.id = id
         super(AttrDict, self).__init__(data)
         self['startTime'] = gmtime(int(self['startTime']) / 1000)
         self['displayStartDateTime'] = datetime.strptime(
-            self['displayStartDateTime'], '%m/%d/%y %I:%M %p')
+            self['displayStartDateTime'], '%m/%d/%y %I:%M %p'
+        )
         self['displayStartTime'] = self['displayStartDateTime'].time()
 
     def delete(self, trash=1):
@@ -198,6 +201,7 @@ class Folder(AttrDict):
      * resultsPerPage: int
      * messages: list of Message instances
     """
+
     def __init__(self, voice, name, data):
         self.voice = voice
         self.name = name
@@ -208,6 +212,7 @@ class Folder(AttrDict):
         Returns a list of all messages in this folder
         """
         return [Message(self, *i) for i in self['messages'].items()]
+
     messages = property(messages)
 
     def __len__(self):
@@ -237,6 +242,7 @@ class XMLParser(object):
         'some html payload'
 
     """
+
     attr = None
 
     def start_element(self, name, attrs):
@@ -274,6 +280,7 @@ class XMLParser(object):
         Returns associated ``Folder`` instance for given page (``self.name``)
         """
         return Folder(self.voice, self.name, self.data)
+
     folder = property(folder)
 
     def data(self):
@@ -284,4 +291,5 @@ class XMLParser(object):
             return json.loads(self.json)
         except Exception:
             raise JSONError
+
     data = property(data)

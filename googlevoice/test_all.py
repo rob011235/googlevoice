@@ -24,9 +24,8 @@ def random_gxf():
     def random_alphanumeric():
         while True:
             yield random.choice(string.ascii_letters + string.digits + '-')
-    token = '-'.join((
-        ''.join(itertools.islice(random_alphanumeric(), 34)),
-    ))
+
+    token = '-'.join((''.join(itertools.islice(random_alphanumeric(), 34)),))
     timestamp = int(time.time() * 1000)
     return '{token}:{timestamp}'.format(**locals())
 
@@ -46,17 +45,14 @@ class TestVoice:
             ...
             <input type="hidden" name="gxf" value="{random_gxf}">
             ...
-            """.format(**locals()),
+            """.format(
+                **locals()
+            ),
         )
         responses.add(
-            responses.POST,
-            settings.LOGIN_POST,
+            responses.POST, settings.LOGIN_POST,
         )
-        responses.add(
-            responses.GET,
-            settings.INBOX,
-            "'_rnr_se': 'special-value'"
-        )
+        responses.add(responses.GET, settings.INBOX, "'_rnr_se': 'special-value'")
         voice = Voice()
         voice.login(email=fake.email(), passwd=fake.password())
         assert voice.special == 'special-value'

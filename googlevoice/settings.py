@@ -28,7 +28,7 @@ TYPES = {
     4: 'recorded',
     7: 'placed',
     10: 'sms.received',
-    11: 'sms.sent'
+    11: 'sms.sent',
 }
 
 DEBUG = False
@@ -46,8 +46,18 @@ LOGIN_POST = (
 )
 SMSAUTH = 'https://accounts.google.com/SmsAuth'
 FEEDS = (
-    'inbox', 'starred', 'all', 'spam', 'trash', 'voicemail', 'sms',
-    'recorded', 'placed', 'received', 'missed')
+    'inbox',
+    'starred',
+    'all',
+    'spam',
+    'trash',
+    'voicemail',
+    'sms',
+    'recorded',
+    'placed',
+    'received',
+    'missed',
+)
 
 BASE = 'https://www.google.com/voice/b/0/'
 LOGOUT = 'https://www.google.com/voice/account/signout'

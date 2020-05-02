@@ -13,10 +13,12 @@ import code
 from . import Voice
 
 
-banner = textwrap.dedent("""
+banner = textwrap.dedent(
+    """
     You are now using Google Voice in the interactive python shell
     Try 'help(voice)' for more info
-    """).lstrip()
+    """
+).lstrip()
 
 
 def main():

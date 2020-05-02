@@ -14,7 +14,8 @@ from six.moves import input
 from googlevoice.voice import Voice
 from googlevoice.util import LoginError
 
-parser = OptionParser(usage='''gvoice [options] commands
+parser = OptionParser(
+    usage='''gvoice [options] commands
     Where commands are
 
     login (li) - log into the voice service
@@ -40,14 +41,26 @@ parser = OptionParser(usage='''gvoice [options] commands
         recorded (r)
         placed (p)
         received (re)
-        missed (m)''')
-parser.add_option("-e", "--email", dest="email", default=None,
-                  help="Google Voice Account Email")
-parser.add_option("-p", "--password", dest='passwd', default=None,
-                  help='Your account password (prompted if blank)')
+        missed (m)'''
+)
 parser.add_option(
-    "-b", "--batch", dest='batch', default=False, action="store_true",
-    help='Batch operations, asking for no interactive input')
+    "-e", "--email", dest="email", default=None, help="Google Voice Account Email"
+)
+parser.add_option(
+    "-p",
+    "--password",
+    dest='passwd',
+    default=None,
+    help='Your account password (prompted if blank)',
+)
+parser.add_option(
+    "-b",
+    "--batch",
+    dest='batch',
+    default=False,
+    action="store_true",
+    help='Batch operations, asking for no interactive input',
+)
 
 
 def login(email, passwd, batch):
@@ -114,10 +127,7 @@ def main():
                 voice.call(
                     input('Outgoing number: '),
                     input('Forwarding number [optional]: ') or None,
-                    int(
-                        input(
-                            'Phone type [1-Home, 2-Mobile, 3-Work, 7-Gizmo]:'
-                        ) or 2)
+                    int(input('Phone type [1-Home, 2-Mobile, 3-Work, 7-Gizmo]:') or 2),
                 )
                 print('Calling...')
             elif action in ('cancelcall', 'cc'):
@@ -130,9 +140,7 @@ def main():
                 print(se)
                 pprint(se.messages)
             elif action in ('download', 'd'):
-                print(
-                    'MP3 downloaded to %s'
-                    % voice.download(input('Message sha1: ')))
+                print('MP3 downloaded to %s' % voice.download(input('Message sha1: ')))
             elif action in ('help', 'h', '?'):
                 print(parser.usage)
             elif action in ('trash', 't'):

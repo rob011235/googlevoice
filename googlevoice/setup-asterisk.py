@@ -11,7 +11,8 @@ from six.moves import input
 
 
 def main():
-    print("""This script installs Google Voice support on your PBX.
+    print(
+        """This script installs Google Voice support on your PBX.
     You must have a system that is compatible with PBX in a Flash.
     WARNING: No error checking is provided.
     By using this script, you agree to assume ALL RISK.
@@ -20,32 +21,39 @@ def main():
     If you make a typo while entering values below, press
     Ctrl-C and start over. Before starting, make sure you
     have removed any original [custom-gv] context.
-    """)
+    """
+    )
 
     conf_default = '/etc/asterisk/extensions_custom.conf'
-    conf = input("""Asterisk dialplan configuration file
-        [Default %s]: """ % conf_default)
+    conf = input(
+        """Asterisk dialplan configuration file
+        [Default %s]: """
+        % conf_default
+    )
 
     if not conf.strip():
         conf = conf_default
 
-    print("""
+    print(
+        """
     Your Google Voice entries are stored in %s
     Edit that file and reload your Asterisk dialplan if you
     make future changes.
-    """ % conf)
+    """
+        % conf
+    )
 
     settings = {
         'config': conf,
-        'gvnum': input(
-            "10-digit Google Voice phone number (e.g. 9871234567): "),
+        'gvnum': input("10-digit Google Voice phone number (e.g. 9871234567): "),
         'acctname': input("Google Voice email address: "),
         'acctpass': getpass("Google Voice password: "),
         'ringback': input("11-digit Ring Back DID (e.g. 16781234567): "),
         'callpark': input("Parking Lot Magic Number: "),
     }
 
-    input("""
+    input(
+        """
     We are now ready to begin the installation.
     Confirm your entries below or press Ctrl-C to abort and try again.
 
@@ -56,11 +64,15 @@ def main():
     CALLPARK: %(callpark)s
 
     Hit Enter key to proceed
-    """ % settings)
+    """
+        % settings
+    )
 
-    print("""
+    print(
+        """
     Installing Google Voice support for your PBX. One moment please...
-    """)
+    """
+    )
 
     content = r"""
     [custom-gv]
@@ -95,7 +107,8 @@ def main():
         print('Error opening file for writing: %s' % conf)
         exit(0)
 
-    print("""
+    print(
+        """
     Installation script is finished. Do NOT run it again on this system!
 
     You can now reload your Asterisk dialplan configuration with
@@ -106,7 +119,8 @@ def main():
     For complete documentation, see the following Nerd Vittles article:
 
     http://nerdvittles.com/?p=635
-    """)
+    """
+    )
 
 
 __name__ == '__main__' and main()
