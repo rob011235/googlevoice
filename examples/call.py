@@ -1,5 +1,3 @@
-from six.moves import input
-
 from googlevoice import Voice
 
 

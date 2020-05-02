@@ -5,8 +5,6 @@ import string
 import time
 import itertools
 
-from six.moves import input
-
 import responses
 import pytest
 import faker

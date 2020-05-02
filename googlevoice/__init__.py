@@ -7,9 +7,8 @@ folders of your Google Voice Accounts.
 You can use the Python API or command line script to schedule
 calls, check for new received calls/sms,
 or even sync your recorded voicemails/calls.
-Works for Python 2 and Python 3
-
 """
+
 __author__ = 'Justin Quick and Joe McCall'
 __email__ = ('justquick@gmail.com, joe@mcc4ll.us',)
 __copyright__ = 'Copyright 2009, Justin Quick and Joe McCall'

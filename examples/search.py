@@ -1,8 +1,4 @@
-from __future__ import print_function
-
 import pprint
-
-from six.moves import input
 
 from googlevoice import Voice
 

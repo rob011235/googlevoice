@@ -3,11 +3,8 @@
 Jacob Feisley, Ward Mundy, and Justin Quick
 """
 
-from __future__ import print_function
-
 from sys import exit
 from getpass import getpass
-from six.moves import input
 
 
 def main():

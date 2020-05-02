@@ -1,6 +1,5 @@
 import os
-
-from six.moves import configparser
+import configparser
 
 from . import settings
 

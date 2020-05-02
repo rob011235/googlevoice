@@ -2,14 +2,10 @@
 Googlevoice interactive application. Invoke with python -m googlevoice.
 """
 
-from __future__ import print_function
-
 from sys import exit
 from atexit import register
 from optparse import OptionParser
 from pprint import pprint
-
-from six.moves import input
 
 from googlevoice.voice import Voice
 from googlevoice.util import LoginError

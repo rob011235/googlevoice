@@ -8,8 +8,6 @@ from .conf import config
 from . import settings
 from . import util
 
-from six.moves import input
-
 import requests
 
 qpat = re.compile(r'\?')
