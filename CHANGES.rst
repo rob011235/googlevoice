@@ -1,3 +1,9 @@
+v3.0.0
+======
+
+Refreshed project metadata. Now requires Python 3.6 or later.
+Login still basically is non-functional.
+
 2.0.5
 =====
 
