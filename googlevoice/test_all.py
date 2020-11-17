@@ -48,7 +48,8 @@ class TestVoice:
             ),
         )
         responses.add(
-            responses.POST, settings.LOGIN_POST,
+            responses.POST,
+            settings.LOGIN_POST,
         )
         responses.add(responses.GET, settings.INBOX, "'_rnr_se': 'special-value'")
         voice = Voice()

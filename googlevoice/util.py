@@ -94,7 +94,9 @@ class Phone(AttrDict):
         self.voice = voice
         super(Phone, self).__init__(data)
 
-    def enable(self,):
+    def enable(
+        self,
+    ):
         """
         Enables this phone for usage
         """
