@@ -39,6 +39,7 @@ class Config(configparser.ConfigParser):
     def set(self, option, value, section='gvoice'):
         return configparser.ConfigParser.set(self, section, option, value)
 
+    @property
     def phoneType(self):
         try:
             return int(self.get('phoneType'))
@@ -49,7 +50,6 @@ class Config(configparser.ConfigParser):
         with open(self.fname, 'w') as f:
             self.write(f)
 
-    phoneType = property(phoneType)
     forwardingNumber = property(lambda self: self.get('forwardingNumber'))
     email = property(lambda self: self.get('email', 'auth'))
     password = property(lambda self: self.get('password', 'auth'))

@@ -209,13 +209,12 @@ class Folder(AttrDict):
         self.name = name
         super(AttrDict, self).__init__(data)
 
+    @property
     def messages(self):
         """
         Returns a list of all messages in this folder
         """
         return [Message(self, *i) for i in self['messages'].items()]
-
-    messages = property(messages)
 
     def __len__(self):
         return self['totalSize']
@@ -277,14 +276,14 @@ class XMLParser(object):
             raise ParsingError
         return self.folder
 
+    @property
     def folder(self):
         """
         Returns associated ``Folder`` instance for given page (``self.name``)
         """
         return Folder(self.voice, self.name, self.data)
 
-    folder = property(folder)
-
+    @property
     def data(self):
         """
         Returns the parsed json information after calling the XMLParser
@@ -293,5 +292,3 @@ class XMLParser(object):
             return json.loads(self.json)
         except Exception:
             raise JSONError
-
-    data = property(data)

@@ -40,6 +40,7 @@ class Voice(object):
     ######################
     # Some handy methods
     ######################
+    @property
     def special(self):
         """
         Returns special identifier for your session (if logged in)
@@ -54,8 +55,6 @@ class Voice(object):
             sp = None
         self._special = sp
         return sp
-
-    special = property(special)
 
     def login(self, email=None, passwd=None, smsKey=None):
         """
@@ -200,21 +199,19 @@ class Voice(object):
             },
         )
 
+    @property
     def phones(self):
         """
         Returns a list of ``Phone`` instances attached to your account.
         """
         return [util.Phone(self, data) for data in self.contacts['phones'].values()]
 
-    phones = property(phones)
-
+    @property
     def settings(self):
         """
         Dict of current Google Voice settings
         """
         return util.AttrDict(self.contacts['settings'])
-
-    settings = property(settings)
 
     def send_sms(self, phoneNumber, text):
         """
@@ -271,6 +268,7 @@ class Voice(object):
             fo.write(resp.content)
         return fn
 
+    @property
     def contacts(self):
         """
         Partial data of your Google Account Contacts related to
@@ -282,8 +280,6 @@ class Voice(object):
             return self._contacts
         self._contacts = self.__get_xml_page('contacts')()
         return self._contacts
-
-    contacts = property(contacts)
 
     ######################
     # Helper methods
