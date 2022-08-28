@@ -1,5 +1,5 @@
-Welcome to googlevoice documentation!
-=====================================
+Welcome to |project| documentation!
+===================================
 
 .. toctree::
    :maxdepth: 1
