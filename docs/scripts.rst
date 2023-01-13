@@ -4,8 +4,8 @@
 Command Line Script
 ===================
 
-The module also comes with a script called ``gvoice`` which can do all the wonderful stuff that the 
-Python module can do easily on the command line. 
+The module also comes with a script called ``gvoice`` which can do all the wonderful stuff that the
+Python module can do easily on the command line.
 
 
 Usage
@@ -15,17 +15,17 @@ Usage
 
     Usage: gvoice [options] commands
         Where commands are
-        
+
         login (li) - log into the voice service
         logout (lo) - log out of the service and make sure session is deleted
         help
-    
+
         Voice Commands
             call (c) - call an outgoing number from a forwarding number
             cancel (cc) - cancel a particular call
             download (d) - download mp3 message given id hash
             send_sms (s) - send sms messages
-                
+
         Folder Views
             search (se)
             inbox (i)
@@ -40,7 +40,7 @@ Usage
             placed (p)
             recieved (re)
             missed (m)
-    
+
     Options:
       -h, --help            show this help message and exit
       -e EMAIL, --email=EMAIL

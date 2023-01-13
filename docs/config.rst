@@ -4,14 +4,14 @@
 Configuration
 =============
 
-When you first install the module, it places an ini configuration 
+When you first install the module, it places an ini configuration
 file in yournamed ``.gvoice`` in your home directory. This runs the ``gvoice``
 and other scripts with your personal configuration defined in this file.
-Run by default, these parameters are prompted for. 
+Run by default, these parameters are prompted for.
 Edit this file and fill in your personal configuration information.
 If you enter your ``password``, it must be raw text so watch the privileges on this file.
 
-    
+
 Settings by Section
 ---------------------
 
@@ -38,10 +38,10 @@ gvoice
 **phoneType**
 
     The type of device connected to your ``forwardingNumber``. Options are::
-        
+
         1. Home
         2. Mobile
         3. Work
         7. Gizmo
-        
+
     Defaults to ``Mobile``

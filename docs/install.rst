@@ -11,7 +11,7 @@ Requirements
 
   * `Python >= 2.3 <http://www.python.org/download/>`_
   * For Python < 2.6, gvoice requires `simplejson <http://code.google.com/p/simplejson/>`_
-    
+
 Setups
 -------------------
 

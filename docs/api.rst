@@ -23,7 +23,7 @@ gathering information from folders in the Google Voice service. These methods ar
   * ``placed`` - Outgoing messages
   * ``received`` - Incoming messages
   * ``missed`` - Messages not received
-  
+
 All of these special methods operate the same way. When they are called,
 they parse the feed from the Google Voice service and return a ``Folder`` instance.
 After they have been called, you can grab the JSON and HTML data directly.
@@ -52,10 +52,10 @@ Folder
 
 Phone
 ---------------
-   
+
 .. autoclass:: Phone
    :members:
-   
+
 Message
 ---------------
 
