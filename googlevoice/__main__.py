@@ -88,24 +88,7 @@ def pprint_folder(name):
     pprint(folder.messages, indent=4)
 
 
-def main():
-    options, args = parser.parse_args()
-
-    try:
-        action, args = args[0], args[1:]
-    except IndexError:
-        action = 'interactive'
-
-    if action == 'help':
-        print(parser.usage)
-        exit(0)
-
-    voice = Voice()
-    login()
-
-    register(logout)
-
-    if action == 'interactive':
+def run_interactive(voice, action, args):
         while 1:
             try:
                 action = input('gvoice> ').lower().strip()
@@ -159,7 +142,9 @@ def main():
                 pprint_folder('recorded')
             elif action in ('sms', 'sm'):
                 pprint_folder('sms')
-    else:
+
+
+def run_other(voice, action, args):
         if action == 'send_sms':
             try:
                 num, args = args[0], args[1:]
@@ -168,6 +153,26 @@ def main():
                 exit(0)
             args = (num, ' '.join(args))
         getattr(voice, action)(*args)
+
+
+def main():
+    options, args = parser.parse_args()
+
+    try:
+        action, args = args[0], args[1:]
+    except IndexError:
+        action = 'interactive'
+
+    if action == 'help':
+        print(parser.usage)
+        exit(0)
+
+    voice = Voice()
+    login()
+
+    register(logout)
+
+    globals().get(f'run_{action}', run_other)(voice, action, args)
 
 
 __name__ == '__main__' and main()
