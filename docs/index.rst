@@ -12,12 +12,6 @@ Welcome to |project| documentation!
    api
 
 
-.. automodule:: googlevoice
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
 Indices and tables
 ==================
 
