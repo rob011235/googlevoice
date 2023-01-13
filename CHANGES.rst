@@ -1,3 +1,12 @@
+v3.1.0
+======
+
+Refreshed project metadata. Cleaned up lint.
+
+Requires Python 3.7 or later.
+
+Login is still non-functional.
+
 v3.0.0
 ======
 
