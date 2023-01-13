@@ -2,6 +2,7 @@
 Googlevoice interactive application. Invoke with python -m googlevoice.
 """
 
+import functools
 from sys import exit
 from atexit import register
 from optparse import OptionParser
@@ -100,53 +101,72 @@ def run_interactive(voice, action, args):
         handle_action(voice, action)
 
 
+action_aliases = dict(
+    q='quit',
+    exit='quit',
+    li='login',
+    lo='logout',
+    c='call',
+    cc='cancelcall',
+    s='sendsms',
+    se='search',
+    d='download',
+    t='trash',
+    sp='spam',
+    i='inbox',
+    v='voicemail',
+    a='all',
+    st='starred',
+    m='missed',
+    re='received',
+    r='recorded',
+    sm='sms',
+)
+
+
+def call(voice):
+    voice.call(
+        input('Outgoing number: '),
+        input('Forwarding number [optional]: ') or None,
+        int(input('Phone type [1-Home, 2-Mobile, 3-Work, 7-Gizmo]:') or 2),
+    )
+    print('Calling...')
+
+
+def send_sms(voice):
+    voice.send_sms(input('Phone number: '), input('Message: '))
+    print('Message Sent')
+
+
+def search(voice):
+    se = voice.search(input('Search query: '))
+    print(se)
+    pprint(se.messages)
+
+
+def download(voice):
+    print('MP3 downloaded to %s' % voice.download(input('Message sha1: ')))
+
+
 def handle_action(voice, action):
-    if action in ('q', 'quit', 'exit'):
-        exit(0)
-    elif action in ('login', 'li'):
-        login()
-    elif action in ('logout', 'lo'):
-        voice.logout()
-    elif action in ('call', 'c'):
-        voice.call(
-            input('Outgoing number: '),
-            input('Forwarding number [optional]: ') or None,
-            int(input('Phone type [1-Home, 2-Mobile, 3-Work, 7-Gizmo]:') or 2),
-        )
-        print('Calling...')
-    elif action in ('cancelcall', 'cc'):
-        voice.cancel()
-    elif action in ('sendsms', 's'):
-        voice.send_sms(input('Phone number: '), input('Message: '))
-        print('Message Sent')
-    elif action in ('search', 'se'):
-        se = voice.search(input('Search query: '))
-        print(se)
-        pprint(se.messages)
-    elif action in ('download', 'd'):
-        print('MP3 downloaded to %s' % voice.download(input('Message sha1: ')))
-    elif action in ('help', 'h', '?'):
-        print(parser.usage)
-    elif action in ('trash', 't'):
-        pprint_folder('trash')
-    elif action in ('spam', 'sp'):
-        pprint_folder('spam')
-    elif action in ('inbox', 'i'):
-        pprint_folder('inbox')
-    elif action in ('voicemail', 'v'):
-        pprint_folder('voicemail')
-    elif action in ('all', 'a'):
-        pprint_folder('all')
-    elif action in ('starred', 'st'):
-        pprint_folder('starred')
-    elif action in ('missed', 'm'):
-        pprint_folder('missed')
-    elif action in ('received', 're'):
-        pprint_folder('received')
-    elif action in ('recorded', 'r'):
-        pprint_folder('recorded')
-    elif action in ('sms', 'sm'):
-        pprint_folder('sms')
+    fn_map = dict(
+        quit=functools.partial(exit, 0),
+        login=login,
+        logout=voice.logout,
+        call=functools.partial(call, voice),
+        cancelcall=voice.cancel,
+        sendsms=send_sms,
+        download=download,
+        help=functools.partial(print, parser.usage),
+    )
+    folder_names = (
+        'trash spam inbox voicemail all starred missed received recorded sms'.split()
+    )
+    fn_map.update(
+        (name, functools.partial(pprint_folder, name)) for name in folder_names
+    )
+    pure_action = action_aliases.get(action, action)
+    return fn_map.get(pure_action, lambda: None)()
 
 
 def run_other(voice, action, args):
